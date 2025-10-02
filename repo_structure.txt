@@ -1,0 +1,21 @@
+#Tentative Repo structure
+playku/
+  __init__.py
+  cli.py          # CLI entrypoint
+  commands/       # group commands
+    __init__.py
+    new.py
+    continue.py
+    hint.py
+    save.py
+  core/           # business logic
+    __init__.py
+    state.py
+    grid.py
+    draw.py
+    stats.py
+  data/           # pregenerated puzzles
+  tests/
+  docs/
+  pyproject.toml
+  .gitignore
