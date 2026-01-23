@@ -3,7 +3,13 @@ Docstring for core.grid
 """
 import math
 import logging
+import numpy as np
 
+logging.basicConfig(
+    level = logging.DEBUG,
+    format = "{asctime}-{levelname}-{message}",
+    datefmt ="%Y-%m-%d %H:%M"
+)
 logger = logging.getLogger(__name__)
 
 class SudokuGrid:
@@ -17,25 +23,28 @@ class SudokuGrid:
     """
     GRID_SIZE =9
 
-    DEFAULT_GRID = [ [0,0,7], [8,0,0], [4,0,0],
-                     [0,0,4], [0,9,3], [0,8,0],
-                     [3,5,0], [0,1,4], [0,0,9],
-                     [0,6,0], [3,0,0], [0,0,8],
-                     [4,7,0], [0,8,0], [0,6,3],
-                     [8,0,0], [0,0,9], [0,5,0],
-                     [1,0,0], [9,2,0], [0,7,5],
-                     [0,3,0], [5,7,0], [8,0,0],
-                     [0,0,5], [0,0,6], [9,0,0]
-                ]
+    DEFAULT_GRID =  [0,0,7, 8,0,0, 4,0,0,
+                     0,0,4, 0,9,3, 0,8,0,
+                     3,5,0, 0,1,4, 0,0,9,
+                     0,6,0, 3,0,0, 0,0,8,
+                     4,7,0, 0,8,0, 0,6,3,
+                     8,0,0, 0,0,9, 0,5,0,
+                     1,0,0, 9,2,0, 0,7,5,
+                     0,3,0, 5,7,0, 8,0,0,
+                     0,0,5, 0,0,6, 9,0,0]
+    
+    DEFAULT_GRID =  np.array(DEFAULT_GRID)
+                
 
-    def init(self, size =GRID_SIZE):
+    def __init__(self, grid, size =GRID_SIZE):
         self.size =size
+        self.grid =grid
 
-    def generate_grid(self):
-        """
-        Generate a new grid based
-        """
+    
+    @property
+    def grid(self):
         ...
+
 
     def validate_grid(self):
         """
@@ -61,3 +70,5 @@ class SudokuGrid:
             logger.warning("box size is not an integer. The sudodu grid is not standard")
             return NotImplemented
         
+    def _get_box(self):
+        ...
