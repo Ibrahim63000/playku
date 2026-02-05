@@ -3,7 +3,6 @@ Docstring for core.grid
 """
 import math
 import logging
-import numpy as np
 
 logging.basicConfig(
     level = logging.DEBUG,
@@ -33,17 +32,21 @@ class SudokuGrid:
                      0,3,0, 5,7,0, 8,0,0,
                      0,0,5, 0,0,6, 9,0,0]
     
-    DEFAULT_GRID =  np.array(DEFAULT_GRID)
                 
 
-    def __init__(self, grid, size =GRID_SIZE):
+    def __init__(self, grid= DEFAULT_GRID, size =GRID_SIZE):
         self.size =size
         self.grid =grid
 
     
     @property
     def grid(self):
-        ...
+        return self._grid
+    
+    @grid.setter
+    def grid(self, value):
+        if not isinstance(value, list):
+            raise TypeError(f"{value} must be of type list")
 
 
     def validate_grid(self):
