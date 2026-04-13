@@ -60,7 +60,7 @@ class SudokuGrid:
 
     def is_grid_complete(self):
         "Check if grid is completed"
-        ...
+        return 0 not in self.grid
 
     def _get_fixed_squares(self):
         """
@@ -86,7 +86,4 @@ class SudokuGrid:
         box_size = self._get_box_size()
         box_rows = [position[0]*box_size +row for row in range(box_size)]
         box_cols = [position[1]*box_size +col for col in range(box_size)]
-        print(box_rows)
-        print('*'*10)
-        print(box_cols)
         return [self._get_row(row)[col] for row in box_rows for col in box_cols]
