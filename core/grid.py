@@ -3,6 +3,7 @@ Docstring for core.grid
 """
 import math
 import logging
+from itertools import product
 
 logging.basicConfig(
     level = logging.DEBUG,
@@ -50,13 +51,59 @@ class SudokuGrid:
             raise TypeError(f"{value} must be of type array")
         if any([elt<= self.GRID_SIZE  for elt in value]):
             self._grid = value
+    
+    def _get_row(self, row_number):
+        return self.grid[row_number*self.size:(row_number+1)*self.size]
+    
+    def _get_col(self, col_number):
+        return [self._get_row(row)[col_number] for row in range(self.GRID_SIZE)]
+    
+    def _get_box_size(self):
+        box_size = math.sqrt(self.size)
+        if box_size -int(box_size) ==0:
+            return int(box_size)
+        else:
+            logger.warning("box size is not an integer. The sudodu grid is not standard")
+            return NotImplemented
+    
+    def _get_box(self, position =(0,0)):
+        box_size = self._get_box_size()
+        box_rows = [position[0]*box_size +row for row in range(box_size)]
+        box_cols = [position[1]*box_size +col for col in range(box_size)]
+        return [self._get_row(row)[col] for row in box_rows for col in box_cols]
 
+    def is_row_valid(self, n):
+        row_values = self._get_row(n)
+        return sorted(row_values) == [_ for _ in range(1, self.GRID_SIZE+1)]
+    
+    def is_col_valid(self, n):
+        col_values = self._get_col(n)
+        return sorted(col_values) == [_ for _ in range(1, self.GRID_SIZE+1)]
+    
+    def is_box_valid(self, position):
+        box_values =self._get_box(position)
+        return sorted(box_values) == [_ for _ in range(self.GRID_SIZE+1)]
 
-    def validate_grid(self):
+    def iterrows(self):
+        for i in range(1, self.GRID_SIZE +1):
+            yield self._get_row(i)
+
+    def itercols(self):
+        for i in range(1, self.GRID_SIZE +1):
+            yield self._get_col(i)
+
+    def iterboxes(self):
+        box_size = self._get_box_size()
+        for position in product(range(box_size), range(box_size)):
+            yield self._get_box(position)
+
+    def is_grid_valid(self):
         """
         Is the grid valid
         """
-        ...
+        if not self.is_grid_complete():
+            logger.warning("The Grid is not complete yet")
+            return False
 
     def is_grid_complete(self):
         "Check if grid is completed"
@@ -68,22 +115,7 @@ class SudokuGrid:
         """
         ...
 
-    def _get_box_size(self):
-        box_size = math.sqrt(self.size)
-        if box_size -int(box_size) ==0:
-            return int(box_size)
-        else:
-            logger.warning("box size is not an integer. The sudodu grid is not standard")
-            return NotImplemented
+
         
-    def _get_row(self, row_number):
-        return self.grid[row_number*self.size:(row_number+1)*self.size]
     
-    def _get_col(self, col_number):
-        return [self._get_row(row)[col_number] for row in range(self.GRID_SIZE)]
         
-    def _get_box(self, position =(0,0)):
-        box_size = self._get_box_size()
-        box_rows = [position[0]*box_size +row for row in range(box_size)]
-        box_cols = [position[1]*box_size +col for col in range(box_size)]
-        return [self._get_row(row)[col] for row in box_rows for col in box_cols]
