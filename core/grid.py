@@ -82,20 +82,20 @@ class SudokuGrid:
     
     def is_box_valid(self, position):
         box_values =self._get_box(position)
-        return sorted(box_values) == [_ for _ in range(self.GRID_SIZE+1)]
+        return sorted(box_values) == [_ for _ in range(1, self.GRID_SIZE+1)]
 
     def iterrows(self):
-        for i in range(1, self.GRID_SIZE +1):
-            yield self._get_row(i)
+        for i in range(self.GRID_SIZE):
+            yield i, self._get_row(i)
 
     def itercols(self):
-        for i in range(1, self.GRID_SIZE +1):
-            yield self._get_col(i)
+        for i in range(self.GRID_SIZE):
+            yield i, self._get_col(i)
 
     def iterboxes(self):
         box_size = self._get_box_size()
         for position in product(range(box_size), range(box_size)):
-            yield self._get_box(position)
+            yield position, self._get_box(position)
 
     def is_grid_valid(self):
         """
@@ -104,6 +104,17 @@ class SudokuGrid:
         if not self.is_grid_complete():
             logger.warning("The Grid is not complete yet")
             return False
+        
+        for i in range(self.GRID_SIZE):
+            if not self.is_row_valid(i) or not self.is_col_valid(i):
+                return False
+            
+        for position, _ in self.iterboxes():
+            if not self.is_box_valid(position):
+                return False
+            
+        return True
+            
 
     def is_grid_complete(self):
         "Check if grid is completed"
@@ -113,7 +124,12 @@ class SudokuGrid:
         """
         Return position of clues vs player editable squares
         """
-        ...
+        fixed_positions = []
+        for i, row in self.iterrows():
+            fixed_positions.extend([(i,j) for j in range(len(row)) if row[j] != 0])
+
+        return fixed_positions
+
 
 
         
