@@ -85,14 +85,17 @@ class SudokuGrid:
         return sorted(box_values) == [_ for _ in range(1, self.GRID_SIZE+1)]
 
     def iterrows(self):
+        """Iterate over rows, top to bottom"""
         for i in range(self.GRID_SIZE):
             yield i, self._get_row(i)
 
     def itercols(self):
+        """Iterate over columns left to right"""
         for i in range(self.GRID_SIZE):
             yield i, self._get_col(i)
 
     def iterboxes(self):
+        """Iterate over boxes, left to right, top to bottom"""
         box_size = self._get_box_size()
         for position in product(range(box_size), range(box_size)):
             yield position, self._get_box(position)
