@@ -4,6 +4,7 @@ Docstring for core.grid
 import math
 import logging
 from itertools import product
+from functools import cache
 
 logging.basicConfig(
     level = logging.DEBUG,
@@ -32,15 +33,13 @@ class SudokuGrid:
                      8,0,0, 0,0,9, 0,5,0,
                      1,0,0, 9,2,0, 0,7,5,
                      0,3,0, 5,7,0, 8,0,0,
-                     0,0,5, 0,0,6, 9,0,0]
-    
-                
+                     0,0,5, 0,0,6, 9,0,0]          
 
     def __init__(self, grid= DEFAULT_GRID, size =GRID_SIZE):
         self.size =size
         self.grid =grid
+        self.fixed_squares = self._get_fixed_squares()
 
-    
     @property
     def grid(self):
         return self._grid
@@ -58,6 +57,7 @@ class SudokuGrid:
     def _get_col(self, col_number):
         return [self._get_row(row)[col_number] for row in range(self.GRID_SIZE)]
     
+    @cache
     def _get_box_size(self):
         box_size = math.sqrt(self.size)
         if box_size -int(box_size) ==0:
@@ -80,7 +80,9 @@ class SudokuGrid:
         col_values = self._get_col(n)
         return sorted(col_values) == [_ for _ in range(1, self.GRID_SIZE+1)]
     
+
     def is_box_valid(self, position):
+        """."""
         box_values =self._get_box(position)
         return sorted(box_values) == [_ for _ in range(1, self.GRID_SIZE+1)]
 
@@ -132,9 +134,3 @@ class SudokuGrid:
             fixed_positions.extend([(i,j) for j in range(len(row)) if row[j] != 0])
 
         return fixed_positions
-
-
-
-        
-    
-        
