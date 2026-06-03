@@ -17,13 +17,16 @@ logger = logging.getLogger(__name__)
 class SudokuState:
 
     def __init__(self, grid: SudokuGrid, state):
+        """."""
         self.grid = grid
         self.state =state
 
     def update_state(self):
+        """."""
         ...
 
     def rollback_state(self):
+        """."""
         ...
 
 if __name__ == "__main__":
