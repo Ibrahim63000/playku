@@ -24,7 +24,7 @@ class SudokuState:
         self.fixed_squares = initial_state._get_fixed_squares()
 
     def update_state(self, move_square, move_value):
-        """."""
+        """Given a state and a player's input (move) return a new state and update the states list accordingly"""
         if move_square[0] not in range(self.initial_state.size) or move_square[
             1
         ] not in range(self.initial_state.size):
@@ -39,7 +39,7 @@ class SudokuState:
         return new_state
 
     def rollback_state(self):
-        """."""
+        """Return the state before last"""
         ...
 
 
